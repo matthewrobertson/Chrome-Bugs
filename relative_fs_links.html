@@ -1,0 +1,74 @@
+<html>
+	<head>
+	</head>
+	<body>
+	<script type='text/javascript'>
+
+	var fail = function() {
+		alert('oops');	
+	};
+
+	var writeFile = function(path, content, fs, successCallback)  {
+			fs.root.getFile(path, { create: true, exclusive: false }, function(fileEntry) {
+				fileEntry.createWriter(function(fileWriter) {
+
+					fileWriter.onwriteend = successCallback;
+
+					fileWriter.onerror = fail;
+
+					// Create a new Blob and write it
+					var bb = new WebKitBlobBuilder(); 
+					if(typeof content === "string") {
+						bb.append(content);
+						fileWriter.write(bb.getBlob('text/plain'));
+					}
+					else {
+						var byteArr = new Uint8Array(content);
+						bb.append(byteArr.buffer);
+						fileWriter.write(bb.getBlob());
+					}
+
+				}, fail);
+
+			}, fail);
+	};
+
+    var linkHtml = function(url, name) {
+        var a = "<a href='"
+        a += url;
+        a += "'>";
+        a += name;
+        a += "</a>";
+        return a;
+    }
+
+    var buildContent = function(name, base, relative) {
+        var cont = "<html><head></head><body>"
+
+        cont += '<h1>' + name + '</h1>';
+        cont += linkHtml(base + relative, 'Absolute');
+        cont += "<br/>"
+        cont += linkHtml(relative, 'Relative');
+
+        cont += "</body></html>";
+        return cont;
+    }
+
+    window.webkitRequestFileSystem(window.TEMPORARY, 1024, function(fs) {
+
+        var f1 = "f1.html";
+        var f2 = "f2.html";
+        var baseUrl = fs.root.toURL();
+        var f1Cnt = buildContent("FILE 1", baseUrl, f2);
+        var f2Cnt = buildContent("FILE 2", baseUrl, f1);
+
+        writeFile(f1, f1Cnt, fs, function() {
+        	writeFile(f2, f2Cnt, fs, function() {
+        		window.location.href = baseUrl + f1;
+        	});
+        });
+            
+    }, fail);
+	</script>
+	</body>
+</html>
