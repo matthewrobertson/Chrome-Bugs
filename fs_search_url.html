@@ -33,20 +33,12 @@
 			}, fail);
 	};
 
-    var linkHtml = function(url, name) {
-        var a = "<a href='"
-        a += url;
-        a += "'>";
-        a += name;
-        a += "</a>";
-        return a;
-    }
-
-    var buildContent = function(name, base, relative) {
-        var cont = "<html><head></head><body>"
-        cont += "<script type='text/javascript'>"
+    var buildContent = function() {
+        var cont = "<html><head></head><body><scr";
+        cont += "ipt type='text/javascript'>"
         cont += "alert('The search string is:' + window.location.search)";
-        cont += "</script></body></html>";
+        cont += "</scr";
+        cont += "ipt></body></html>";
         return cont;
     }
 
@@ -56,10 +48,10 @@
         var baseUrl = fs.root.toURL();
         var search_string = "?foo=bar";
         var url = baseUrl + f1 + search_string;
-        var f1Cnt = buildContent("FILE 1", baseUrl, f2);
+        var f1Cnt = buildContent();
 
         writeFile(f1, f1Cnt, fs, function() {
-        	window.location.href = url;
+            window.location.href = url;
         });
             
     }, fail);
