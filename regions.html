@@ -1,0 +1,37 @@
+<html>
+<head>
+<style type="text/css">
+.container {
+    width: 100%;
+}
+
+#content {
+    -webkit-flow: 'foo';
+    -webkit-flow-into: foo;
+}
+
+div[class^='content'] {
+    border: 1px solid red;
+    content: -webkit-from-flow('foo');
+    -webkit-flow-from: foo;
+    height: 82px;
+    overflow: hidden;
+    padding: 10px;
+    width: 100%;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div id="content">
+        <iframe src='link.html'></iframe>
+    </div>
+    <h1>Normal iFrame (no region)</h1>
+    <div>
+        <iframe src='link.html'></iframe>
+    </div>
+    <h1>the same iFrame flowing into a region</h1>
+    <div class="content-1"></div>
+</div>
+</body>
+</html>
