@@ -1,0 +1,68 @@
+<html>
+	<head>
+	</head>
+	<body>
+	<script type='text/javascript'>
+
+	var fail = function() {
+		alert('oops');	
+	};
+
+	var writeFile = function(path, content, fs, successCallback)  {
+			fs.root.getFile(path, { create: true, exclusive: false }, function(fileEntry) {
+				fileEntry.createWriter(function(fileWriter) {
+
+					fileWriter.onwriteend = successCallback;
+
+					fileWriter.onerror = fail;
+
+					// Create a new Blob and write it
+					var bb = new WebKitBlobBuilder(); 
+					if(typeof content === "string") {
+						bb.append(content);
+						fileWriter.write(bb.getBlob('text/plain'));
+					}
+					else {
+						var byteArr = new Uint8Array(content);
+						bb.append(byteArr.buffer);
+						fileWriter.write(bb.getBlob());
+					}
+
+				}, fail);
+
+			}, fail);
+	};
+
+    var linkHtml = function(url, name) {
+        var a = "<a href='"
+        a += url;
+        a += "'>";
+        a += name;
+        a += "</a>";
+        return a;
+    }
+
+    var buildContent = function(name, base, relative) {
+        var cont = "<html><head></head><body>"
+        cont += "<script type='text/javascript'>"
+        cont += "alert('The search string is:' + window.location.search)";
+        cont += "</script></body></html>";
+        return cont;
+    }
+
+    window.webkitRequestFileSystem(window.TEMPORARY, 1024, function(fs) {
+
+        var f1 = "f1.html";
+        var baseUrl = fs.root.toURL();
+        var search_string = "?foo=bar";
+        var url = baseUrl + f1 + search_string;
+        var f1Cnt = buildContent("FILE 1", baseUrl, f2);
+
+        writeFile(f1, f1Cnt, fs, function() {
+        	window.location.href = url;
+        });
+            
+    }, fail);
+	</script>
+	</body>
+</html>
