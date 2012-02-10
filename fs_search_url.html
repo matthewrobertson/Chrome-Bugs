@@ -17,16 +17,10 @@
 					fileWriter.onerror = fail;
 
 					// Create a new Blob and write it
-					var bb = new WebKitBlobBuilder(); 
-					if(typeof content === "string") {
-						bb.append(content);
-						fileWriter.write(bb.getBlob('text/plain'));
-					}
-					else {
-						var byteArr = new Uint8Array(content);
-						bb.append(byteArr.buffer);
-						fileWriter.write(bb.getBlob());
-					}
+					var bb = new WebKitBlobBuilder(); 				
+					bb.append(content);
+					fileWriter.write(bb.getBlob('text/plain'));
+					
 
 				}, fail);
 
@@ -44,7 +38,7 @@
 
     window.webkitRequestFileSystem(window.TEMPORARY, 1024, function(fs) {
 
-        var f1 = "f1.html";
+        var f1 = "file.html";
         var baseUrl = fs.root.toURL();
         var search_string = "?foo=bar";
         var url = baseUrl + f1 + search_string;
