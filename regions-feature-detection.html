@@ -50,7 +50,7 @@
 
             var style = document.documentElement.style;
             document.getElementById("flow-from-status").innerHTML = getStatusStr( style.webkitFlowInto );
-            document.getElementById("flow-into-status").innerHTML = getStatusStr( style.webkitFlowInto );
+            document.getElementById("flow-into-status").innerHTML = getStatusStr( style.webkitFlowFrom );
             document.getElementById("get-flow-status" ).innerHTML = getStatusStr( document.webkitGetFlowByName );
         }
     </script>
