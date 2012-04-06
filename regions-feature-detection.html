@@ -1,0 +1,59 @@
+<html>
+<head>
+<style type="text/css">
+
+#content {
+    -webkit-flow: 'foo';
+    -webkit-flow-into: foo;
+}
+
+#region {
+    border: 1px solid red;
+    -webkit-flow-from: foo;
+    height: 82px;
+    overflow: hidden;
+    padding: 10px;
+    width: 50%;
+}
+</style>
+</head>
+<body>
+
+    <h1>CSS3 Region Feature Support Detection</h1>
+    <table>
+        <tr>
+            <td>elem.style.webkitFlowFrom</td>
+            <td id="flow-from-status"></td>
+        </tr>
+        <tr>
+            <td>elem.style.webkitFlowInto</td>
+            <td id="flow-into-status"></td>
+        </tr>
+        <tr>
+            <td>edocument.webkitGetFlowByName</td>
+            <td id="get-flow-status"></td>
+        </tr>
+    </table>
+    <h1>CSS3 Region Behaviour</h1>
+    <div id="content">
+        If I am inside the red box, this browser supports css3 regions
+    </div>
+    <div id="region"></div>
+    <script type="text/javascript">
+        window.onload = function () {
+            var getStatusStr = function(status) {
+                if(typeof status !== "undefined") {
+                    return "<span style='color: green'>is present</span>";
+                }
+                return "<span style='color: red'>is undefined</span>";
+            }
+
+            var style = document.documentElement.style;
+            document.getElementById("flow-from-status").innerHTML = getStatusStr( style.webkitFlowInto );
+            document.getElementById("flow-into-status").innerHTML = getStatusStr( style.webkitFlowInto );
+            document.getElementById("get-flow-status" ).innerHTML = getStatusStr( document.webkitGetFlowByName );
+        }
+    </script>
+
+</body>
+</html>
